@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { registerAuthReady } from "./authEvents";
+import { registerAuthReady } from "./AuthEvents"
 
 const AuthContext = createContext();
 

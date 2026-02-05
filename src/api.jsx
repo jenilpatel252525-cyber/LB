@@ -1,7 +1,7 @@
 // src/api.js
 import axios from "axios";
 // import { useAuth } from "./AuthContext";
-import { setAuthReadyExternal } from "./authEvents";
+import { setAuthReadyExternal } from "./AuthEvents";
 
 /**
  * Configure this via env:
