@@ -1,6 +1,7 @@
 import API from "./api"
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
+import Navbar from "./Navbar"
 
 export default function Recent(){
     const [recent,setRecent]=useState([])
@@ -22,8 +23,9 @@ export default function Recent(){
     },[])
 
     return(
-        <div className="min-h-screen flex items-center justify-center">
-            <div className="flex flex-col items-center p-2.5 space-y-2">
+        <div className="min-h-screen flex-col flex">
+            <Navbar></Navbar>
+            <div className="flex-1 flex flex-col items-center justify-center p-2.5 space-y-2">
                 <h1 className="text-2xl">Recent orders</h1>
                 {
                     recent.length > 0 ? (

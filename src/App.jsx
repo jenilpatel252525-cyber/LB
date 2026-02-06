@@ -5,7 +5,6 @@ import Profile from "./Profile";
 import Home from "./Home";
 import Recent from "./Recent";
 import Order from "./Order";
-import Layout from "./Layout";
 import PrivateRoute from "./PrivateRoute";
 
 function App() {
@@ -16,14 +15,13 @@ function App() {
         {/* public routes */}
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
 
         {/* protected/layout routes */}
-        <Route element={<Layout />}>
-          <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
-          <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
-          <Route path="/recent" element={<PrivateRoute><Recent /></PrivateRoute>} />
-          <Route path="/order" element={<PrivateRoute><Order /></PrivateRoute>} />
-        </Route>
+        
+        <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+        <Route path="/recent" element={<PrivateRoute><Recent /></PrivateRoute>} />
+        <Route path="/order" element={<PrivateRoute><Order /></PrivateRoute>} />
 
       </Routes>
     </BrowserRouter>

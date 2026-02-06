@@ -1,6 +1,7 @@
 import API from "./api"
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
+import Navbar from "./Navbar"
 
 export default function Home(){
     // const [loading, setLoading] = useState(false);
@@ -142,161 +143,162 @@ export default function Home(){
 
     return(
         <>
-            <div className="min-h-screen p-4 flex flex-col justify-center items-center space-y-2">
-                <h1 className="text-xl font-bold mb-4">Active Orders</h1>
-
-                {active.length === 0 ? (
-                    <p>No active orders.</p>
-                ) : (
-                    <table className="border-collapse border w-full">
-                        <thead>
-                            <tr className="bg-gray-200">
-                                <th className="border p-2">Order #</th>
-                                <th className="border p-2">Pickup</th>
-                                <th className="border p-2">Delivery</th>
-                                <th className="border p-2">Address</th>
-                                <th className="border p-2">Status</th>
-                                <th className="border p-2">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {active.map((o) => (
-                                <>
-                                    <tr key={o.id} className="text-center">
-                                        <td className="border p-2">{o.id}</td>
-
-                                        {/* PICKUP TIME */}
-                                        <td className="border p-2">
-                                            {editingId === o.id ? (
-                                                <input
-                                                    type="datetime-local"
-                                                    value={editPickup.slice(0,16)}
-                                                    onChange={(e) => setEditPickup(e.target.value)}
-                                                    className="border rounded px-1"
-                                                />
-                                            ) : (
-                                                new Date(o.pickup_time).toLocaleString()
-                                            )}
-                                        </td>
-
-                                        {/* DELIVERY TIME */}
-                                        <td className="border p-2">
-                                            {editingId === o.id ? (
-                                                <input
-                                                    type="datetime-local"
-                                                    value={editDelivery.slice(0,16)}
-                                                    onChange={(e) => setEditDelivery(e.target.value)}
-                                                    className="border rounded px-1"
-                                                />
-                                            ) : (
-                                                new Date(o.delivery_time).toLocaleString()
-                                            )}
-                                        </td>
-
-                                        <td className="border p-2">
-                                            {editingId === o.id ? (
-                                                <textarea
-                                                    rows="2"
-                                                    value={editAddress}
-                                                    onChange={(e) => setEditAddress(e.target.value)}
-                                                    className="border rounded px-1 w-full"
-                                                />
-                                            ) : (
-                                                o.address
-                                            )}
-                                        </td>
-
-                                        {/* STATUS */}
-                                        <td className="border p-2">{o.status}</td>
-
-                                        {/* ACTIONS */}
-                                        <td className="border p-2">
-                                            {o.status === "placed" && (
-                                                <div className="">
-                                                    {editingId === o.id ? (
-                                                        <>
-                                                            <button
-                                                                className="bg-green-500 text-white px-2 py-1 rounded"
-                                                                onClick={() => handleSave(o.id)}
-                                                            >
-                                                                Save
-                                                            </button>
-                                                            <button
-                                                                className="bg-gray-400 text-white px-2 py-1 rounded"
-                                                                onClick={handleCancelEdit}
-                                                            >
-                                                                Cancel
-                                                            </button>
-                                                        </>
-                                                    ) : (
-                                                        <button
-                                                            className="bg-blue-400 hover:bg-blue-600 text-white px-2 py-1 rounded"
-                                                            onClick={() => handleEdit(o)}
-                                                        >
-                                                            Update
-                                                        </button>
-                                                    )}
-                                                    <button
-                                                        className="bg-red-400 hover:bg-red-600 text-white px-2 py-1 rounded"
-                                                        onClick={() => handleCancel(o.id)}
-                                                    >
-                                                        Cancel order
-                                                    </button>
-                                                </div>
-                                            )}
-                                        </td>   
-                                    </tr>
-                                    <tr className="">
-                                        <td colSpan={6} className="">
-                                            <OrderProgress status={o.status} />
-                                        </td>
-                                    </tr>
-                                </>
-                            ))}
-                            </tbody>
-                    </table>
-                )}
-                <div className="p-2 space-x-2">
-                    <button className="bg-green-400 hover:bg-green-600 text-white px-2 py-1 rounded" onClick={()=>navigate("/order")}>Place new order</button>
-                    <button className="bg-blue-400 hover:bg-blue-600 text-white px-2 py-1 rounded" onClick={()=>navigate("/profile")}>Go to profile</button>
-                </div>
-                {
-                    recent.length > 0 ? (
-                        <div className="flex flex-col space-y-2 items-center">
-                            <h1 className="text-2xl">Recent orders</h1>
-                            <table className="border-collapse border w-full">
-                                <thead>
-                                    <tr className="bg-gray-200">
-                                        <th className="border p-2">Order #</th>
-                                        <th className="border p-2">Pickup</th>
-                                        <th className="border p-2">Delivery</th>
-                                        <th className="border p-2">Address</th>
-                                        <th className="border p-2">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        recent.slice(0,3).map((o)=>(
-                                                <tr key={o.id} className="text-center">
-                                                    <td className="border p-2 space-x-2">{o.id}</td>
-                                                    <td className="border p-2 space-x-2">{new Date(o.pickup_time).toLocaleString()}</td>
-                                                    <td className="border p-2 space-x-2">{new Date(o.delivery_time).toLocaleString()}</td>
-                                                    <td className="border p-2 space-x-2">{o.address}</td>
-                                                    <td className="border p-2 space-x-2">{o.status}</td>
-                                                </tr>
-                                            )
-                                        )
-                                    }
-                                </tbody>
-                            </table>
-                            <button onClick={()=>navigate('/recent')} className="bg-blue-400 w-fit hover:bg-blue-600 text-white px-2 py-1 rounded">View all</button>
-                        </div>
+            <div className="min-h-screen flex flex-col">
+                <Navbar></Navbar>
+                <div className="flex-1 flex flex-col justify-center items-center space-y-2 p-4">
+                    <h1 className="text-xl font-bold mb-4">Active Orders</h1>
+                    {active.length === 0 ? (
+                        <p>No active orders.</p>
                     ) : (
-                        <p>No recent orders.</p>
-                    )
-                }
+                        <table className="border-collapse border w-full">
+                            <thead>
+                                <tr className="bg-gray-200">
+                                    <th className="border p-2">Order #</th>
+                                    <th className="border p-2">Pickup</th>
+                                    <th className="border p-2">Delivery</th>
+                                    <th className="border p-2">Address</th>
+                                    <th className="border p-2">Status</th>
+                                    <th className="border p-2">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {active.map((o) => (
+                                    <>
+                                        <tr key={o.id} className="text-center">
+                                            <td className="border p-2">{o.id}</td>
+
+                                            {/* PICKUP TIME */}
+                                            <td className="border p-2">
+                                                {editingId === o.id ? (
+                                                    <input
+                                                        type="datetime-local"
+                                                        value={editPickup.slice(0,16)}
+                                                        onChange={(e) => setEditPickup(e.target.value)}
+                                                        className="border rounded px-1"
+                                                    />
+                                                ) : (
+                                                    new Date(o.pickup_time).toLocaleString()
+                                                )}
+                                            </td>
+
+                                            {/* DELIVERY TIME */}
+                                            <td className="border p-2">
+                                                {editingId === o.id ? (
+                                                    <input
+                                                        type="datetime-local"
+                                                        value={editDelivery.slice(0,16)}
+                                                        onChange={(e) => setEditDelivery(e.target.value)}
+                                                        className="border rounded px-1"
+                                                    />
+                                                ) : (
+                                                    new Date(o.delivery_time).toLocaleString()
+                                                )}
+                                            </td>
+
+                                            <td className="border p-2">
+                                                {editingId === o.id ? (
+                                                    <textarea
+                                                        rows="2"
+                                                        value={editAddress}
+                                                        onChange={(e) => setEditAddress(e.target.value)}
+                                                        className="border rounded px-1 w-full"
+                                                    />
+                                                ) : (
+                                                    o.address
+                                                )}
+                                            </td>
+
+                                            {/* STATUS */}
+                                            <td className="border p-2">{o.status}</td>
+
+                                            {/* ACTIONS */}
+                                            <td className="border p-2">
+                                                {o.status === "placed" && (
+                                                    <div className="">
+                                                        {editingId === o.id ? (
+                                                            <>
+                                                                <button
+                                                                    className="bg-green-500 text-white px-2 py-1 rounded"
+                                                                    onClick={() => handleSave(o.id)}
+                                                                >
+                                                                    Save
+                                                                </button>
+                                                                <button
+                                                                    className="bg-gray-400 text-white px-2 py-1 rounded"
+                                                                    onClick={handleCancelEdit}
+                                                                >
+                                                                    Cancel
+                                                                </button>
+                                                            </>
+                                                        ) : (
+                                                            <button
+                                                                className="bg-blue-400 hover:bg-blue-600 text-white px-2 py-1 rounded"
+                                                                onClick={() => handleEdit(o)}
+                                                            >
+                                                                Update
+                                                            </button>
+                                                        )}
+                                                        <button
+                                                            className="bg-red-400 hover:bg-red-600 text-white px-2 py-1 rounded"
+                                                            onClick={() => handleCancel(o.id)}
+                                                        >
+                                                            Cancel order
+                                                        </button>
+                                                    </div>
+                                                )}
+                                            </td>   
+                                        </tr>
+                                        <tr className="">
+                                            <td colSpan={6} className="">
+                                                <OrderProgress status={o.status} />
+                                            </td>
+                                        </tr>
+                                    </>
+                                ))}
+                                </tbody>
+                        </table>
+                    )}
+                    <div className="p-2 space-x-2">
+                        <button className="bg-green-400 hover:bg-green-600 text-white px-2 py-1 rounded" onClick={()=>navigate("/order")}>Place new order</button>
+                        <button className="bg-blue-400 hover:bg-blue-600 text-white px-2 py-1 rounded" onClick={()=>navigate("/profile")}>Go to profile</button>
+                    </div>
+                    {
+                        recent.length > 0 ? (
+                            <div className="flex flex-col space-y-2 items-center">
+                                <h1 className="text-2xl">Recent orders</h1>
+                                <table className="border-collapse border w-full">
+                                    <thead>
+                                        <tr className="bg-gray-200">
+                                            <th className="border p-2">Order #</th>
+                                            <th className="border p-2">Pickup</th>
+                                            <th className="border p-2">Delivery</th>
+                                            <th className="border p-2">Address</th>
+                                            <th className="border p-2">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            recent.slice(0,3).map((o)=>(
+                                                    <tr key={o.id} className="text-center">
+                                                        <td className="border p-2 space-x-2">{o.id}</td>
+                                                        <td className="border p-2 space-x-2">{new Date(o.pickup_time).toLocaleString()}</td>
+                                                        <td className="border p-2 space-x-2">{new Date(o.delivery_time).toLocaleString()}</td>
+                                                        <td className="border p-2 space-x-2">{o.address}</td>
+                                                        <td className="border p-2 space-x-2">{o.status}</td>
+                                                    </tr>
+                                                )
+                                            )
+                                        }
+                                    </tbody>
+                                </table>
+                                <button onClick={()=>navigate('/recent')} className="bg-blue-400 w-fit hover:bg-blue-600 text-white px-2 py-1 rounded">View all</button>
+                            </div>
+                        ) : (
+                            <p>No recent orders.</p>
+                        )
+                    }
+                </div>
             </div>
-            
         </>
     )
 }

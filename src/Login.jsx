@@ -32,10 +32,10 @@ export default function Login() {
     }
 
     return (
-        <div className="bg-gray-400 min-h-screen flex justify-center items-center">
-            <div className="border-2 rounded-2xl bg-cyan-50 w-1/2 min-h-[50%] px-6 py-6 flex justify-center items-center flex-col space-y-2">
+        <div className="bg-gray-400 h-screen flex justify-center items-center">
+            <div className="border-2 rounded-2xl bg-cyan-50 w-1/2 h-1/2 px-6 py-6 flex justify-center items-center flex-col space-y-2">
                 <form
-                    className="flex justify-center items-center flex-col space-y-2 w-full max-w-sm"
+                    className="flex justify-center items-center flex-col space-y-2"
                     onSubmit={handleSubmit}
                 >
                     <input
