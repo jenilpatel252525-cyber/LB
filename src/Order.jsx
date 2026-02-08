@@ -8,9 +8,11 @@ export default function Order(){
     const [delivery, setDelivery] = useState("")
     const [address, setAddress] = useState("")
     const navigate = useNavigate()
+    const [loading , setLoading] = useState(false)
 
     async function fetchData() {
         try {
+            setLoading(true)
             const res = await API.get("/profile/");
 
             if (res.data.length === 0) {
@@ -26,6 +28,9 @@ export default function Order(){
         } catch (err) {
             console.error(err);
             alert("Failed to load profile");
+        }
+        finally{
+            setLoading(false)
         }
     }
 
@@ -46,6 +51,8 @@ export default function Order(){
                 "/order/",
                 payload
             )
+            setPickup("")
+            setDelivery("")
             alert("order placed successfully!")
         }
         catch(err){
@@ -53,6 +60,26 @@ export default function Order(){
             alert("Something went wrong. Retry!");
         }
     }
+
+    if (loading) {
+            return (
+                <div className="min-h-screen flex flex-col">
+                    
+                    <div className="flex-1 flex justify-center items-center">
+    
+                        <div className="flex flex-col items-center gap-3">
+    
+                            {/* spinner */}
+                            <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    
+                            <p className="text-gray-600">Loading...</p>
+    
+                        </div>
+    
+                    </div>
+                </div>
+            )
+        }
 
     return (
         <div className="flex flex-col min-h-screen items-center justify-center space-y-2">
@@ -99,7 +126,7 @@ export default function Order(){
                     </button>
                 </form>
             </div>
-            <button className="hover:bg-green-600 bg-green-400 w-1/12 rounded" onClick={() => navigate("/home")} type="button">Home</button>
+            <button className="hover:bg-green-600 bg-green-400 w-2/12 rounded" onClick={() => navigate("/home")} type="button">Home</button>
         </div>
     )
 }

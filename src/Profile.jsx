@@ -73,6 +73,27 @@ export default function Profile() {
         }
     }
 
+    if (loading) {
+            return (
+                <div className="min-h-screen flex flex-col">
+                    <Navbar />
+    
+                    <div className="flex-1 flex justify-center items-center">
+    
+                        <div className="flex flex-col items-center gap-3">
+    
+                            {/* spinner */}
+                            <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    
+                            <p className="text-gray-600">Loading...</p>
+    
+                        </div>
+    
+                    </div>
+                </div>
+            )
+        }
+
     return (
         <>
             <div className="min-h-screen flex flex-col">
@@ -134,7 +155,7 @@ export default function Profile() {
                             </button>
                         </form>
                     </div>
-                    <button className="hover:bg-green-600 bg-green-400 w-1/12 rounded" onClick={() => navigate("/home")} type="button">Home</button>
+                    <button className="hover:bg-green-600 bg-green-400 w-2/12 rounded" onClick={() => navigate("/home")} type="button">Home</button>
                 </div>
             </div>
         </>

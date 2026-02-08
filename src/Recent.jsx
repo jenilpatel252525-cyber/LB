@@ -6,8 +6,10 @@ import Navbar from "./Navbar"
 export default function Recent(){
     const [recent,setRecent]=useState([])
     const navigate = useNavigate()
+    const [loading , setLoading] = useState(false)
     async function fetchData() {
         try{
+            setLoading(true)
             const res = await API.get("/order/delivered/")
             setRecent(res.data)
         }
@@ -15,12 +17,35 @@ export default function Recent(){
             console.error(err)
             alert("Failed to load home data")
         }
+        finally{
+            setLoading(false)
+        }
     }
 
     useEffect(()=>{
         // eslint-disable-next-line react-hooks/set-state-in-effect
         fetchData()
     },[])
+
+    if (loading) {
+            return (
+                <div className="min-h-screen flex flex-col">
+                    
+                    <div className="flex-1 flex justify-center items-center">
+    
+                        <div className="flex flex-col items-center gap-3">
+    
+                            {/* spinner */}
+                            <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    
+                            <p className="text-gray-600">Loading...</p>
+    
+                        </div>
+    
+                    </div>
+                </div>
+            )
+        }
 
     return(
         <div className="min-h-screen flex-col flex">
